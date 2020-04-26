@@ -1,7 +1,7 @@
 import os
 
 class Config():
-    FLASK_DEBUG = True
+    FLASK_DEBUG = False
     HOST = os.getenv('HOST', '0.0.0.0')
     PORT = os.getenv('PORT', 5000)
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
