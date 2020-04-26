@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Форма редактирования пользователя{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+{% block content %}
+    <header class="container-fluid header">
+        <form class="addevent-box" action="/">
+            <button class="btn btn-global" type="submit">Главная</button>
+        </form>
+    </header>
+    <div class="container-fluid status">
+        <div class="statusbar">Статус:</div>
+        <div class="events">
+        <span>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for message in messages %}
+        {{ message[1] }}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+            <h2 class="page-title">Форма редактирования пользователя</h2>
+            <h2 class="page-title">"{{user.username}}"</h2>
+            <form enctype="multipart/form-data" action="/user/{{user.id}}" method="POST">
+                <div class="form-group d-flex flex-column w-80">
+                    {{ form.csrf_token }}
+                    <div class="form-field body-text-color my-3">Имя
+                        <input class="form-control body-text-color" id="firstname" name="firstname" placeholder="Введите своё имя" type="text" value="{% if user.firstname %}{{user.firstname}}{% endif %}">
+                    </div>
+                    <div class="form-field body-text-color my-3">Фамилия
+                        <input class="form-control body-text-color" id="lastname" name="lastname" placeholder="Введите свою фамилию" type="text" value="{% if user.lastname %}{{user.lastname}}{% endif %}">
+                    </div>
+                    <div class="form-field body-text-color my-3">Новый пароль
+                        <input class="form-control body-text-color" id="password1" name="password1" placeholder="Введите новый пароль" type="password" value="">
+                    </div>
+                    <div class="form-field body-text-color my-3">Повторите новый пароль
+                        <input class="form-control body-text-color" id="password2" name="password2" placeholder="Повторите новый пароль" type="password" value="">
+                    </div>
+                    <div class="form-field body-text-color my-3">Email
+                        <input class="form-control body-text-color" id="email" name="email" placeholder="Введите своё имя" required="" type="email" value="{{user.email}}">
+                    </div>
+                    <input type="submit" class="btn btn btn-global" value="Изменить данные">
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

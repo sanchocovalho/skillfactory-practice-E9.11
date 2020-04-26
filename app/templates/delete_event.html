@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Удаление события{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+{% block content %}
+    <header class="container-fluid header">
+        <div class="btn-box">
+            <form class="addevent-box" action="/">
+                <button class="btn btn-global" type="submit">Главная</button>
+            </form>
+            <form class="addevent-box" action="/event/{{event.id}}">
+                <button class="btn btn-global" type="submit">Назад</button>
+            </form>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row row-center">
+            <div class="col-12">
+                <h2 class="page-title">Вы уверены что хотите удалить событие "{{event.title}}"?</h2>
+                <form enctype="multipart/form-data" action="/delete_event/{{event.id}}" method="POST">
+                    <div class="form-group text-center my-4">
+                        {{ form.csrf_token }}
+                        <input type="submit" class="btn btn-global" value="Удалить событие">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

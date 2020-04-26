@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Форма редактирования события{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/daterangepicker.css') }}">
+{% endblock %}
+{% block content %}
+    <header class="container-fluid header">
+        <div class="btn-box">
+            <form class="addevent-box" action="/">
+                <button class="btn btn-global" type="submit">Главная</button>
+            </form>
+            <form class="addevent-box" action="/event/{{event.id}}">
+                <button class="btn btn-global" type="submit">Назад</button>
+            </form>
+        </div>
+    </header>
+    <div class="container-fluid status">
+        <div class="statusbar">Статус:</div>
+        <div class="events">
+        <span>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for message in messages %}
+        {{ message[1] }}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+            <h2 class="page-title">Форма редактирования события</h2>
+            <form enctype="multipart/form-data" action="/update_event/{{event.id}}" method="POST">
+                <div class="form-group d-flex flex-column w-80">
+                    {{ form.csrf_token }}
+                    <div class="form-field body-text-color my-3">Название <input class="form-control body-text-color" id="title" name="title" placeholder="Введите название события" required="" type="text" value="{{event.title}}"></div>
+                    <div class="form-field body-text-color my-3">Описание <textarea class="form-control body-text-color" style="height:25vh;" id="description" name="description" placeholder="Опишите ваше событие">{{event.description}}</textarea></div>
+                    <div class="form-field body-text-color my-3">Дата начала события <input class="form-control body-text-color" id="start_time" name="start_time" placeholder="ДД-ММ-ГГГГ ЧЧ:ММ" required="" type="text" value="{{event.start_time|datetime}}"></div>
+                    <div class="form-field body-text-color my-3">Дата окончания события <input class="form-control body-text-color" id="end_time" name="end_time" placeholder="ДД-ММ-ГГГГ ЧЧ:ММ" required="" type="text" value="{{event.end_time|datetime}}"></div>
+                    <input type="submit" class="btn btn btn-global" value="Изменить событие">
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/daterangepicker.min.js') }}"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('#start_time').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            autoApply: true,
+            drops: "up",
+            minDate: "01/01/2018",
+            maxDate: "01/01/2030",
+            locale: {
+                format: 'DD-MM-YYYY HH:mm'
+            },
+            applyButtonClasses: "btn-global",
+            cancelClass: "btn-global"
+        });
+    });
+    $(function() {
+        $('#end_time').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            autoApply: true,
+            drops: "up",
+            minDate: "01/01/2018",
+            maxDate: "01/01/2030",
+            locale: {
+                format: 'DD-MM-YYYY HH:mm'
+            },
+            applyButtonClasses: "btn-global",
+            cancelClass: "btn-global"
+        });
+    });
+    </script>
+{% endblock %}

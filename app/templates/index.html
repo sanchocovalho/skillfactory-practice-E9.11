@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}Сервис планирования событий{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    {% if not current_user.is_authenticated %}
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+    <header class="container-fluid header">
+        <div class="user-box">
+            Привет, <a href="/user/{{current_user.id}}"><span class="cur_user">{{current_user.username}}</span></a>!
+        </div>
+        <h2 class="page-title">Сервис планирования событий</h2>
+        <div class="btn-box">
+            <form class="addevent-box" action="/create_event">
+                <button class="btn btn-global" type="submit">Создать событие</button>
+            </form>
+            <form class="logout-box" action="/logout">
+                <button class="btn btn-global" type="submit">Выйти</button>
+            </form>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="card-column">
+            {% if events %}
+            <div class="card-head-box">
+                <div class="card-head-name">Название события</div>
+                <div class="card-author">Автор</div>
+                <div class="card-date">Дата начала</div>
+                <div class="card-date">Дата окончания</div>
+                <div class="card-desc">Описание события</div>
+            </div>
+            {% for event in events %}
+            <a class="card-box" href="/event/{{event.id}}">
+                <div class="card-name">{{event.title|truncatechars(25)}}</div>
+                <div class="card-author">{{event.author}}</div>
+                <div class="card-date">{{event.start_time|datetime}}</div>
+                <div class="card-date">{{event.end_time|datetime}}</div>
+                <div class="card-desc">{{event.description|truncatechars(190)}}</div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <div class="card-head-box">
+                <div class="card-nothing">Пока нет ни одного события</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="container-fluid main-box">
+        <div class="login-main">
+            <h2 class="main-title">Сервис планирования событий</h2>
+            <div class="login-container">
+                <div class="authfy-login">
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li id="logintab" class="nav-item active" role="presentation"><a href="#login" class="lnk-toggler" data-toggle="tab1">Войти</a></li>
+                        <li id="signuptab" class="nav-item" role="presentation"><a href="#signup" class="lnk-toggler" data-toggle="tab2">Зарегистрироваться</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="login" class="authfy-panel panel-login text-center tab-pane active">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <form name="loginForm" action="/login" class="loginForm" method="POST">
+                                        {{ loginform.csrf_token }}
+                                        <div class="form-group wrap-input">
+                                            <input type="text" class="form-control text-center" name="login_username" autofocus="" required="" id="login_username" placeholder="Логин">
+                                            <span class="focus-input"></span>
+                                        </div>
+                                        <div class="form-group wrap-input">
+                                            <div class="pwdMask">
+                                                <input type="password" class="form-control text-center" name="login_password" required="" id="login_password" placeholder="Пароль">
+                                                <span class="focus-input"></span>
+                                                <span class="fa fa-eye-slash pwd-toggle"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-global btn-block"
+                                                type="submit" name="btnLogIn">Войти</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="signup" class="authfy-panel panel-signup text-center tab-pane">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <form name="signupForm"  action="/signup" class="signupForm" method="POST">
+                                        {{ form.csrf_token }}
+                                        <div class="form-group wrap-input">
+                                            <input type="text" class="form-control text-center" name="signup_username" autofocus="" required="" id="signup_username" placeholder="Логин">
+                                            <span class="focus-input"></span>
+                                        </div>
+                                        <div class="form-group wrap-input">
+                                            <div class="pwdMask">
+                                                <input type="password" class="form-control text-center" name="signup_password" id="signup_password" placeholder="Пароль">
+                                                <span class="focus-input"></span>
+                                                <span class="fa fa-eye-slash pwd-toggle"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group wrap-input">
+                                            <input type="email" class="form-control  text-center" name="signup_email" id="signup_email" placeholder="Почта">
+                                            <span class="focus-input"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-global btn-block"
+                                                type="submit" name="btnSignIn">Зарегистрироваться</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="events-msg">
+                    <span>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    {{ message[1] }}
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {% if not current_user.is_authenticated %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function(a){
+            $(".lnk-toggler").on("click",function(t){
+                t.preventDefault();
+                let tab = $(this).data("toggle");
+                if (tab == "tab1"){
+                    $("#signup").removeClass("active");
+                    $("#login").addClass("active");
+                    $("#signuptab").removeClass("active");
+                    $("#logintab").addClass("active");
+                }
+                else {
+                    $("#login").removeClass("active");
+                    $("#signup").addClass("active"); 
+                    $("#logintab").removeClass("active");
+                    $("#signuptab").addClass("active");
+                }
+            }),
+            $(".pwd-toggle").on("click",function(t){
+                t.preventDefault();
+                $(this).toggleClass("fa-eye-slash fa-eye");
+                $(this).hasClass("fa-eye") ? $(".pwdMask > .form-control").attr("type","text") : $(".pwdMask > .form-control").attr("type","password");
+            })
+        });
+    </script>
+    {% endif %}
+{% endblock %}

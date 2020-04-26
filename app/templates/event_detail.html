@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{event.title}}{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+    <header class="container-fluid header">
+        <form class="addevent-box" action="/">
+            <button class="btn btn-global" type="submit">Главная</button>
+        </form>
+    </header>
+    <div class="container">
+        <div class="event-box">
+            <h2 class="event-title">{{event.title}}</h2>
+            <p class="event-date">Автор: {{event.author}}</p>
+            <p class="event-date">Дата начала события: {{event.start_time|datetime}}</p>
+            <p class="event-date">Дата окончания события: {{event.end_time|datetime}}</p>
+            <p class="event-content">{{event.description}}</p>
+            {% if current_user.is_authenticated and current_user.username == event.author or current_user.is_superuser %}
+            <div class="control-box">
+                <form action="/update_event/{{event.id}}">
+                    <button type="submit" class="btn btn-global my-2">Изменить</button>
+                </form>
+                <form action="/delete_event/{{event.id}}">
+                    <button type="submit" class="btn btn-global my-2">Удалить</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

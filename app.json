@@ -1,0 +1,6 @@
+{
+    "name": "Task planing",
+    "description": "Task planing on Heroku",
+    "image": "heroku/python",
+    "keywords": ["python", "flask" ]
+}

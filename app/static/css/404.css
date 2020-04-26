@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'Consolas';
+    src: url('../font/consolas.ttf')  format('truetype');
+}
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Consolas", sans-serif;
+    box-sizing: border-box;
+}
+body {
+    background: linear-gradient(45deg, #cacaca, #d9d9d9);
+    height: 100vh;
+}
+#container {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../icon/404.png'), #3f3f3f;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .5)
+    border-radius: 10px;
+}
+.content {
+    min-width: 600px;
+    text-align: center;
+}
+.content h2 {
+    font-size: 18vw;
+    color: #ededed;
+    line-height: 1em;
+}
+.content h4 {
+    position: relative;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #111;
+    background: #ededed;
+    font-weight: 300;
+    padding: 10px 20px;
+    display: inline-block;
+}
+.content p {
+    color: #ededed;
+    font-size: 1.2em;
+    margin-top: 30px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 75%;
+}
+.content a {
+    position: relative;
+    display: inline-block;
+    padding: 10px 25px;
+    color: #ededed;
+    background-color: #090142;
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-size: 20px;
+    overflow: hidden;
+    transition: 0.25s;
+    border: solid 2px #090142;
+    border-radius: 10px;
+}
+.content a:hover{
+    color: #ededed;
+    background: #12018c;
+    box-shadow: 0 0 10px #12018c, 0 0 20px #12018c;
+    border: none;
+}

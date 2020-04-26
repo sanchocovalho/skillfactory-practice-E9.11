@@ -1,0 +1,33 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="row-fluid">
+    <div>
+        {% if current_user.is_authenticated %}
+        <h1>Сервис планирования событий</h1>
+        <br>
+		<br>
+        {% else %}
+        <form class="form-group" method="POST" action="">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% for f in form if f.type != 'CSRFTokenField' %}
+            <div style="max-width:350px;">
+            {{ f.label }}
+            {{ f(class_='form-control') }}
+            {% if f.errors %}
+            <ul>
+                {% for error in f.errors %}
+                <li class="list-unstyled">{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+            {% endfor %}
+            <button style="margin: 10px auto;" type="submit">Войти</button>
+        </form>
+        {{ link | safe }}
+        {% endif %}
+    </div>
+    <a class="btn btn-primary" href="/">На главную</a>
+</div>
+{% endblock body %}
