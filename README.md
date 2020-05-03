@@ -38,7 +38,7 @@
 2) Выполнить следующий команды:
    - git init
    - git add .
-   - git commit -m "initial commit
+   - git commit -m "initial commit"
    - heroku login
    - heroku create
    - heroku rename -a oldname newname (переименовываем приложение, если необходимо)
