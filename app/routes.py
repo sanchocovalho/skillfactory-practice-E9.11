@@ -124,7 +124,7 @@ def create_event():
 @login_required
 def update_event(id):
     event = Event.query.get(id)
-    if current_user.username == event.author:
+    if current_user.username == event.author or current_user.is_superuser:
         form = EventForm()
         if request.method == "POST":
             if form.validate_on_submit():
@@ -142,17 +142,17 @@ def update_event(id):
             else:
                 flash('Введены некорректные данные!')       
         return render_template ('update_event.html', event=event, form=form)
-    return redirect('/')
+    return redirect(f'/event/{event.id}')
 
 @app.route('/delete_event/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_event(id):
     event = Event.query.get(id)
-    if current_user.username == event.author:
+    if current_user.username == event.author or current_user.is_superuser:
         if request.method == "POST":
             db.session.delete(event)
             db.session.commit()
             return redirect('/')
         form = EventForm()
         return render_template ('delete_event.html', event=event, form=form)
-    return redirect('/')
+    return redirect(f'/event/{event.id}')
